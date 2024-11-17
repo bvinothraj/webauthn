@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="lib/Skeleton-2.0.4/css/normalize.css">
+    <link rel="stylesheet" href="lib/Skeleton-2.0.4/css/skeleton.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <title>WebAuthn Key Pair POC</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>
+                Passkey Demo
+            </h1>
+            <form id="register">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="u-full-width" type="text" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="u-full-width" type="email" id="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <input class="button-primary u-full-width" type="submit" value="Register">
+                </div>
+            </form>
+            <p id="responseMessage"></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="twelve columns">
+            <p>Uses <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API">Web
+                    Authentication
+                    API</a>
+            </p>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+
+</html>

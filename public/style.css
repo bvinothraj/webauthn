@@ -1,0 +1,25 @@
+h1,
+p,
+button {
+    text-align: center;
+}
+
+.container {
+    margin: 10px auto;
+}
+
+.form-container {
+    max-width: 80%;
+    width: 40rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.form-container h3 {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    /* Spacing between form fields */
+}
