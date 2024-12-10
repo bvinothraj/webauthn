@@ -16,7 +16,7 @@ async function register(event) {
     const requestData = { name, email };
 
     try {
-        const response = await fetch('http://localhost:3000/api/users/v1', {
+        const response = await fetch('/api/v1/register/start', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -24,17 +24,56 @@ async function register(event) {
             body: JSON.stringify(requestData),
         });
 
-        const data = await response.json();
+        const credentialOptions = await response.json();
 
         if (response.ok) {
-            responseMessage.textContent = `User created successfully! ID: ${data.userId}`;
+            responseMessage.textContent = `User created successfully! ID: ${credentialOptions.publicKey.user.id}`;
             registerForm.reset();
+            await confirmRegister(credentialOptions);
         } else {
             responseMessage.textContent = `Error: ${data.message}`;
         }
     } catch (error) {
         responseMessage.textContent = `Request failed: ${error.message}`;
     }
+}
+
+async function confirmRegister(credentialOptions) {
+
+    let options = credentialOptions;
+    options.publicKey.challenge = await base64ToArrayBuffer(credentialOptions.publicKey.challenge);
+    options.publicKey.user.id = await base64ToArrayBuffer(credentialOptions.publicKey.user.id);
+    const credential = await navigator.credentials.create(credentialOptions);
+
+    const attestationObject = credential.response.attestationObject;
+    const clientDataJSON = credential.response.clientDataJSON;
+    const challenge = credentialOptions.publicKey.challenge;
+
+    const completeResponse = await fetch('/api/v1/register/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            attestationObject: attestationObject,
+            clientDataJSON: clientDataJSON,
+            challenge: challenge
+        })
+    });
+
+    const result = await completeResponse.json();
+    if (result.success) {
+        alert('Registration successful!');
+    } else {
+        alert('Registration failed: ' + result.error);
+    }
+}
+
+async function base64ToArrayBuffer(base64) {
+    // Decode Base64 to a Uint8Array
+    const binaryString = atob(base64);
+    const uint8Array = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+
+    // If you want to work with the ArrayBuffer directly:
+    return uint8Array.buffer;
 }
 
 async function createCredental() {
